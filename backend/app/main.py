@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .database import engine, Base
 from .routers import users  # Importar el router de usuarios
-#from .models import User, Ticket  # Importar ambos modelos
+from .models import User, Ticket  # Importar ambos modelos
 
 app = FastAPI()
 
