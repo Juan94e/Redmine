@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .database import engine, Base
-from .routers import users  # Importar el router de usuarios
-from .models import User, Ticket  # Importar ambos modelos
+from .routers import users, tickets  # Importar el router de usuarios
+from .models import User, Ticket#, Archivo  # Importar ambos modelos
 
 app = FastAPI()
 
@@ -18,9 +18,10 @@ app.add_middleware(
 # Crear las tablas en la base de datos
 Base.metadata.create_all(bind=engine)
 
-# Incluir el router de usuarios
+# Incluir routers
 #app.include_router(users.router, prefix="/api")  # Los endpoints de usuarios estarán bajo el prefijo: /api
 app.include_router(users.router)
+app.include_router(tickets.router)
 
 @app.get("/")
 def read_root():
