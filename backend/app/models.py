@@ -1,7 +1,8 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, func
 from sqlalchemy.orm import relationship
 from .database import Base
 from datetime import datetime
+from sqlalchemy.sql import func
 
 class User(Base):
     __tablename__ = "users"
@@ -16,21 +17,22 @@ class User(Base):
     tickets = relationship("Ticket", back_populates="cliente", foreign_keys="Ticket.cliente_id")
 
 class Ticket(Base):
-    __tablename__ = "tickets"  # Nueva tabla para los tickets
+    __tablename__ = "tickets"
 
     id = Column(Integer, primary_key=True, index=True)
     titulo = Column(String, index=True)
     descripcion = Column(String)
-    estado = Column(String, default="abierto")  # Estados: "abierto", "en progreso", "cerrado"
-    cliente_id = Column(Integer, ForeignKey("users.id"))  # Relación con el cliente
-    tecnico_id = Column(Integer, ForeignKey("users.id"), nullable=True)  # Relación con el técnico (opcional)
-    fecha_creacion = Column(DateTime, default=datetime.utcnow)  # Fecha de creación
-    fecha_actualizacion = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)  # Fecha de actualización
+    estado = Column(String, default="abierto")
+    cliente_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    tecnico_id = Column(Integer, ForeignKey("users.id"), nullable=True)
+    fecha_creacion = Column(DateTime, nullable=False, default=func.now())  # <- Agregar nullable=False
+    fecha_actualizacion = Column(DateTime, nullable=False, default=func.now(), onupdate=func.now())  # <- Agregar nullable=False
 
     # Relaciones
     cliente = relationship("User", back_populates="tickets", foreign_keys=[cliente_id])  # Relación con el cliente
     tecnico = relationship("User", foreign_keys=[tecnico_id])  # Relación con el técnico
     archivos = relationship("Archivo", back_populates="ticket")  # Relación con archivos
+
 
 class Archivo(Base):
     __tablename__ = "archivos"
