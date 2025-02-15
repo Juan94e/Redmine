@@ -23,7 +23,7 @@ const Login = () => {
             const token = response.data.access_token;
             localStorage.setItem("token", token);  // Guardar el token
             alert("Login exitoso. Redirigiendo al dashboard...");
-            navigate("/");  // Redirigir al dashboard
+            navigate("/dashboard");  // Redirigir al dashboard
         } catch (error) {
             setError("Nombre de usuario o contraseña incorrectos");
             console.error("Error en el login:", error.response?.data || error.message);
