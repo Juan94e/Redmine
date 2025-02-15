@@ -1,33 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { getUsers } from './api';  // Importar la función getUsers
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Login from "./pages/Login";  // Importar el componente Login
+import UsersPage from "./pages/UsersPage";  // Importar el componente UsersPage
 
-function App() {
-    const [users, setUsers] = useState([]);
-
-    useEffect(() => {
-        const fetchUsers = async () => {
-            const data = await getUsers();  // Obtener los usuarios
-            setUsers(data);  // Actualizar el estado
-        };
-
-        fetchUsers();
-    }, []);
-
+const App = () => {
     return (
-        <div>
-            <h1>Users List</h1>
-            {users.length > 0 ? (
-                users.map(user => (
-                    <div key={user.id}>
-                        <p>{user.username}</p>
-                        <p>{user.email}</p>
-                    </div>
-                ))
-            ) : (
-                <p>No users found.</p>
-            )}
-        </div>
+        <Router>
+            <Routes>
+                {/* Ruta para la página de inicio (lista de usuarios) */}
+                <Route path="/" element={<UsersPage />} />
+
+                {/* Ruta para la página de login */}
+                <Route path="/login" element={<Login />} />
+
+                {/* Otras rutas pueden ir aquí */}
+            </Routes>
+        </Router>
     );
-}
+};
 
 export default App;

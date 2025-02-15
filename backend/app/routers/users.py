@@ -4,8 +4,12 @@ from ..models import User  # Importar el modelo User
 from ..database import get_db  # Importar la función get_db
 from pydantic import BaseModel
 from typing import List
+from passlib.context import CryptContext  # Importar CryptContext para hashear contraseñas
 
 router = APIRouter()
+
+# Configuración para hashing de contraseñas
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 # Modelo Pydantic para la creación de usuarios
 class UserCreate(BaseModel):
@@ -30,6 +34,8 @@ def get_users(db: Session = Depends(get_db)):
 # Endpoint para crear un nuevo usuario
 @router.post("/users", response_model=UserResponse)
 def create_user(user: UserCreate, db: Session = Depends(get_db)):
+    print("Datos recibidos:", user.username, user.email, user.password)  # Depuración
+
     # Verificar si el nombre de usuario o el correo ya existen
     db_user = db.query(User).filter(
         (User.username == user.username) | (User.email == user.email)
@@ -37,11 +43,15 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
     if db_user:
         raise HTTPException(status_code=400, detail="El nombre de usuario o correo ya está en uso")
 
+    # Hashear la contraseña antes de guardarla
+    hashed_password = pwd_context.hash(user.password)
+    print("Contraseña hasheada:", hashed_password)  # Depuración
+
     # Crear el usuario
     db_user = User(
         username=user.username,
         email=user.email,
-        password=user.password,  # Nota: Debes hashear la contraseña antes de guardarla
+        password=hashed_password,  # Guardar la contraseña hasheada
         role=user.role
     )
     db.add(db_user)
@@ -76,10 +86,13 @@ def update_user(user_id: int, user: UserCreate, db: Session = Depends(get_db)):
         if existing_user:
             raise HTTPException(status_code=400, detail="El correo ya está en uso")
 
+    # Hashear la contraseña antes de guardarla
+    hashed_password = pwd_context.hash(user.password)
+
     # Actualizar los campos del usuario
     db_user.username = user.username
     db_user.email = user.email
-    db_user.password = user.password  # Nota: Debes hashear la contraseña antes de guardarla
+    db_user.password = hashed_password  # Guardar la contraseña hasheada
     db_user.role = user.role
 
     db.commit()

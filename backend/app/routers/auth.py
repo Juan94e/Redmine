@@ -1,4 +1,3 @@
-# backend/app/routers/auth.py
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
@@ -31,8 +30,13 @@ def get_password_hash(password):
 
 # Función para autenticar al usuario
 def authenticate_user(db: Session, username: str, password: str):
+    print("Buscando usuario en la base de datos:", username)  # Depuración
     user = db.query(User).filter(User.username == username).first()
-    if not user or not verify_password(password, user.password):
+    if not user:
+        print("Usuario no encontrado")  # Depuración
+        return False
+    if not verify_password(password, user.password):
+        print("Contraseña incorrecta")  # Depuración
         return False
     return user
 
@@ -50,6 +54,7 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
 # Endpoint para el login
 @router.post("/login")
 def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
+    print("Datos recibidos:", form_data.username, form_data.password)  # Depuración
     user = authenticate_user(db, form_data.username, form_data.password)
     if not user:
         raise HTTPException(
@@ -61,30 +66,5 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
     access_token = create_access_token(
         data={"sub": user.username}, expires_delta=access_token_expires
     )
+    print("Login exitoso para el usuario:", user.username)  # Depuración
     return {"access_token": access_token, "token_type": "bearer"}
-
-# Dependencia para obtener el usuario actual
-async def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
-    credentials_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="No se pudo validar las credenciales",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
-    try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        username: str = payload.get("sub")
-        if username is None:
-            raise credentials_exception
-    except JWTError:
-        raise credentials_exception
-
-    user = db.query(User).filter(User.username == username).first()
-    if user is None:
-        raise credentials_exception
-    return user
-
-# Función para verificar si el usuario es un técnico
-def get_current_technician(current_user: User = Depends(get_current_user)):
-    if current_user.role != "tecnico":
-        raise HTTPException(status_code=403, detail="No tienes permisos para acceder a este recurso")
-    return current_user

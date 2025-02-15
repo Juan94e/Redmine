@@ -7,12 +7,14 @@ from .models import User, Ticket, Archivo  # Importar ambos modelos
 app = FastAPI()
 
 # Configurar CORS
+# Debe ser el primer middleware registrado
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],  # Origen de tu frontend (React)
+    allow_origins=["http://localhost:5173"],
     allow_credentials=True,
-    allow_methods=["*"],  # Permite todos los métodos (GET, POST, etc.)
-    allow_headers=["*"],  # Permite todos los headers
+    allow_methods=["*"],
+    allow_headers=["*"],
+    expose_headers=["*"]  # Agregar esto para exponer headers
 )
 
 # Crear las tablas en la base de datos
