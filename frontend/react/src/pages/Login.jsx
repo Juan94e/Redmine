@@ -10,9 +10,17 @@ const Login = () => {
 
     const handleLogin = async () => {
         try {
-            await login(username, password); // Usas la función de auth.js
-            alert("Login exitoso. Redirigiendo al dashboard...");
-            navigate("/");  // Redirige a la página principal
+            const { role } = await login(username, password); // Obtener el rol del usuario
+            alert("Login exitoso. Redirigiendo...");
+
+            // Redirigir según el rol
+            if (role === "tecnico") {
+                navigate("/dashboard");  // Redirigir al dashboard del técnico
+            } else if (role === "cliente") {
+                navigate("/");  // Redirigir a la página principal del cliente
+            } else {
+                throw new Error("Rol no válido");
+            }
         } catch (error) {
             setError(error.message);
             console.error("Error en el login:", error.message);

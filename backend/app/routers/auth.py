@@ -64,7 +64,8 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
         )
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
-        data={"sub": user.username}, expires_delta=access_token_expires
+        data={"sub": user.username, "role": user.role},  # Incluir el rol en el token
+        expires_delta=access_token_expires
     )
     print("Login exitoso para el usuario:", user.username)  # Depuración
-    return {"access_token": access_token, "token_type": "bearer"}
+    return {"access_token": access_token, "token_type": "bearer", "role": user.role}  # Devolver el rol
