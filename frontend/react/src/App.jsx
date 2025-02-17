@@ -1,22 +1,27 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Login from "./pages/Login";  // Importar el componente Login
-import UsersPage from "./pages/UsersPage";  // Importar el componente UsersPage
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import Login from "./pages/Login";
+import UsersPage from "./pages/UsersPage";
 import Dashboard from "./pages/Dashboard";
+//import Home from "./pages/Home"; // Crea este componente
+import ProtectedRoute from "./components/ProtectedRoute"; // Crea este componente
 
 const App = () => {
     return (
         <Router>
             <Routes>
-                {/* Ruta para la página de inicio (lista de usuarios) */}
-                <Route path="/" element={<UsersPage />} />
-
-                {/* Ruta para la página de login */}
+                {/* Ruta pública */}
                 <Route path="/login" element={<Login />} />
 
-                <Route path="/dashboard" element={<Dashboard />} />
+                {/* Rutas protegidas */}
+                <Route element={<ProtectedRoute />}>
+                    <Route path="/" element={<UsersPage />} />
+                    {/*<Route path="/users" element={<UsersPage />} />*/}
+                    <Route path="/dashboard" element={<Dashboard />} />
+                </Route>
 
-                {/* Otras rutas pueden ir aquí */}
+                {/* Redirección para rutas no definidas */}
+                <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
         </Router>
     );
