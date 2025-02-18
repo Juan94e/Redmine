@@ -18,6 +18,7 @@ export const login = async (username, password) => {
         const role = response.data.role;  // Obtener el rol del usuario
         localStorage.setItem("token", token);  // Guardar el token en localStorage
         localStorage.setItem("role", role);  // Guardar el rol en localStorage
+        localStorage.setItem("username", username); // Guardar el username
         return { token, role };  // Devolver el token y el rol
     } catch (error) {
         throw new Error(error.response?.data?.detail || "Error en el login");
@@ -35,4 +36,5 @@ export const getRole = () => {
 export const logout = () => {
     localStorage.removeItem("token");  // Eliminar el token al cerrar sesión
     localStorage.removeItem("role");  // Eliminar el rol al cerrar sesión
+    localStorage.removeItem("username"); // Eliminar el username
 };

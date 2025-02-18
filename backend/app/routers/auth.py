@@ -68,4 +68,8 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
         expires_delta=access_token_expires
     )
     print("Login exitoso para el usuario:", user.username)  # Depuración
-    return {"access_token": access_token, "token_type": "bearer", "role": user.role}  # Devolver el rol
+    return {"access_token": access_token,
+            "token_type": "bearer",
+            "role": user.role,
+            "username": user.username
+    }  

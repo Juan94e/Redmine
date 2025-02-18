@@ -1,4 +1,3 @@
-// Archivo: src/components/ProtectedRoute.jsx
 import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { isAuthenticated, getRole } from "../services/auth";
