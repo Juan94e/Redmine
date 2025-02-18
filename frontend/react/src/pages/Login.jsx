@@ -15,9 +15,9 @@ const Login = () => {
 
             // Redirigir según el rol
             if (role === "tecnico") {
-                navigate("/dashboard");  // Redirigir al dashboard del técnico
+                navigate("/tecnico/dashboard");  // Redirigir al dashboard del técnico
             } else if (role === "cliente") {
-                navigate("/");  // Redirigir a la página principal del cliente
+                navigate("/cliente/dashboard");  // Redirigir a la página principal del cliente
             } else {
                 throw new Error("Rol no válido");
             }

@@ -2,9 +2,9 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
 import UsersPage from "./pages/UsersPage";
-import Dashboard from "./pages/Dashboard";
-//import Home from "./pages/Home"; // Crea este componente
-import ProtectedRoute from "./components/ProtectedRoute"; // Crea este componente
+import TecnicoDashboard from "./pages/TecnicoDashboard";
+import ClienteDashboard from "./pages/ClienteDashboard";
+import ProtectedRoute from "./components/ProtectedRoute"; 
 
 const App = () => {
     return (
@@ -13,12 +13,20 @@ const App = () => {
                 {/* Ruta pública */}
                 <Route path="/login" element={<Login />} />
 
-                {/* Rutas protegidas */}
-                <Route element={<ProtectedRoute />}>
-                    <Route path="/" element={<UsersPage />} />
-                    {/*<Route path="/users" element={<UsersPage />} />*/}
-                    <Route path="/dashboard" element={<Dashboard />} />
+                {/* Ruta para clientes */}
+                <Route element={<ProtectedRoute allowedRoles={["cliente"]} />}>
+                    <Route path="/cliente/dashboard" element={<ClienteDashboard />} />
                 </Route>
+
+                {/* Ruta para técnicos */}
+                <Route element={<ProtectedRoute allowedRoles={["tecnico"]} />}>
+                    <Route path="/tecnico/dashboard" element={<TecnicoDashboard />} />
+                </Route>
+
+                {/* Ruta para admin/otros (opcional)
+                <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
+                    <Route path="/users" element={<UsersPage />} />
+                </Route> */}
 
                 {/* Redirección para rutas no definidas */}
                 <Route path="*" element={<Navigate to="/" replace />} />

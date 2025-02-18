@@ -1,5 +1,5 @@
 
-const Dashboard = () => {
+const TecnicoDashboard = () => {
     return (
         <div>
             <h1>Tecnico Dashboard</h1>
@@ -8,4 +8,4 @@ const Dashboard = () => {
     );
 };
 
-export default Dashboard;
+export default TecnicoDashboard;

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { getUsers } from "../services/api";  // Importar la función getUsers
+import { logout } from "../services/auth";
 
 const UsersPage = () => {
     const [users, setUsers] = useState([]);
@@ -26,6 +27,7 @@ const UsersPage = () => {
             ) : (
                 <p>No users found.</p>
             )}
+            <button onClick={logout}>Logout</button>
         </div>
     );
 };
