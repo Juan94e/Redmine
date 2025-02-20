@@ -3,17 +3,25 @@ import { Navigate, Outlet } from "react-router-dom";
 import { isAuthenticated, getRole } from "../services/auth";
 
 const ProtectedRoute = ({ allowedRoles }) => {
+    // 1. Verificar si el usuario está autenticado
     const isAuth = isAuthenticated();
+    
+    // 2. Obtener el rol del usuario desde localStorage
     const userRole = getRole();
 
-    // Si no está autenticado: redirige a login
+    // 3. Si NO está autenticado: redirigir a /login
     if (!isAuth) return <Navigate to="/login" replace />;
 
-    // Si hay roles definidos y el usuario no tiene permiso: redirige a home
+    // 4. Si el usuario tiene un rol pero NO está en los permitidos:
     if (allowedRoles && !allowedRoles.includes(userRole)) {
-        return <Navigate to="/" replace />;
+        // 5. Determinar la ruta base según el rol
+        const baseRoute = userRole === "tecnico" ? "/tecnico/dashboard" : "/cliente/dashboard";
+        
+        // 6. Redirigir a la ruta correspondiente
+        return <Navigate to={baseRoute} replace />;
     }
 
+    // 7. Si todo está bien: renderizar la ruta protegida
     return <Outlet />;
 };
 
