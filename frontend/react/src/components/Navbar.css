@@ -1,26 +1,117 @@
+/* Estilos base del navbar */
 .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 20px;
-    background-color: #007bff;
+    padding: 15px 40px;
+    background-color: #1e1e1e; /* Dark Gray */
     color: white;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    position: relative;
 }
 
-.navbar h1 {
-    margin: 0;
-    font-size: 24px;
+/* Estilo del logo */
+.logo {
+    font-size: 20px;
+    font-weight: bold;
 }
 
-.navbar button {
-    background-color: #dc3545;
+/* Lista de navegación */
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 20px;
+}
+
+.nav-links li {
+    position: relative;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: white;
+    font-size: 16px;
+    transition: color 0.3s ease-in-out;
+}
+
+/* Efecto hover en los enlaces */
+.nav-links a:hover {
+    color: #00b4d8; /* Aguamarina */
+}
+
+/* Botón de contacto */
+.contact-btn {
+    background-color: #00b4d8;
     color: white;
     border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s ease-in-out;
+}
+
+/* Efecto hover en el botón de contacto */
+.contact-btn:hover {
+    background-color: #0096c7;
+}
+
+/* ----- RESPONSIVE DESIGN ----- */
+
+/* Estilos del botón de menú hamburguesa */
+.hamburger {
+    display: none;
+    flex-direction: column;
     cursor: pointer;
 }
 
-.navbar button:hover {
-    background-color: #c82333;
+.bar {
+    width: 25px;
+    height: 3px;
+    background-color: white;
+    margin: 4px 0;
+    transition: 0.4s;
+}
+
+/* Transformación del menú hamburguesa */
+.bar.open:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+.bar.open:nth-child(2) {
+    opacity: 0;
+}
+.bar.open:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* Media Query para pantallas pequeñas */
+@media screen and (max-width: 768px) {
+    .nav-links {
+        position: absolute;
+        top: 60px;
+        right: 0;
+        background-color: #1e1e1e;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+        padding: 20px 0;
+        transform: translateY(-100%);
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .nav-links.active {
+        transform: translateY(0);
+    }
+
+    .hamburger {
+        display: flex;
+    }
+    
+    .contact-btn {
+        display: none;
+    }
 }
