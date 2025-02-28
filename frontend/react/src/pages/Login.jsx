@@ -11,7 +11,7 @@ const Login = () => {
     const handleLogin = async () => {
         try {
             const { role } = await login(username, password); // Obtener el rol del usuario
-            alert("Login exitoso. Redirigiendo...");
+            //alert("Login exitoso. Redirigiendo...");
 
             // Redirigir según el rol
             if (role === "tecnico") {

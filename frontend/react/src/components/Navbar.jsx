@@ -1,15 +1,17 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../services/auth";
+import Lottie from "lottie-react";
+import logoutAnimation from "../assets/icons/exit.json"; // Asegúrate de tener el archivo JSON
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
-  
+
   const handleLogout = () => {
     logout();
     navigate("/login");
-    };
+  };
 
   return (
     <nav className="flex items-center justify-between px-6 py-4 bg-[#1e1e1e] text-white shadow-md relative">
@@ -26,7 +28,7 @@ const Navbar = () => {
         <span className="block w-6 h-0.5 bg-white"></span>
       </div>
 
-      {/* Menú de navegación alineado a la derecha */}
+      {/* Menú de navegación */}
       <ul
         className={`absolute top-full left-0 w-full bg-[#1e1e1e] md:bg-transparent 
         md:static md:flex md:items-center md:ml-auto md:w-auto md:justify-end transition-all duration-300 ease-in-out 
@@ -47,10 +49,14 @@ const Navbar = () => {
             About
           </a>
         </li>
-        {/* Botón Logout dentro del menú en móviles */}
+        {/* Botón Logout con animación Lottie */}
         <li className="md:ml-6 mt-2 md:mt-0">
-          <button className="w-full md:w-auto bg-teal-500 text-white px-4 py-2 rounded-full hover:bg-teal-400 transition-colors" onClick={handleLogout} >
+          <button 
+            className="w-full md:w-auto bg-teal-500 text-white px-4 py-2 rounded-full hover:bg-teal-400 transition-colors flex items-center justify-center gap-2"
+            onClick={handleLogout} 
+          >
             Logout
+            <Lottie animationData={logoutAnimation} className="w-6 h-6" loop={false} />
           </button>
         </li>
       </ul>
