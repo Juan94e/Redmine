@@ -30,7 +30,7 @@ const TecnicoDashboard = () => {
             <Navbar />
             
             {/* Contenido Principal */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20">
+            <div className=" bg-white rounded-lg shadow-md p-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20">
                 {/* Encabezado */}
                 <div className="mb-8">
                     <h1 className="text-3xl font-bold text-gray-900">Panel Técnico</h1>
