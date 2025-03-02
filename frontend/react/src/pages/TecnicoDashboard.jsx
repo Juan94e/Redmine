@@ -1,8 +1,19 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
+import { getTickets } from "../services/tickets";
 
 const TecnicoDashboard = () => {
+  const [tickets, setTickets] = useState([]);
   const username = localStorage.getItem("username");
+
+  useEffect(() => { 
+    const fetchTickets = async () => {
+      const data = await getTickets();
+      setTickets(data);
+    };
+
+    fetchTickets();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -32,16 +43,24 @@ const TecnicoDashboard = () => {
 
           {/* Lista de Tickets Recientes */}
           <div className="border-t pt-6">
-            <h3 className="text-xl font-semibold text-gray-800 mb-4">Tickets Recientes</h3>
+            <h3 className="text-xl font-semibold text-gray-800 mb-4">All Tickets</h3>
             <div className="space-y-4">
               <div className="p-4 border rounded-lg hover:bg-gray-50 transition-colors">
-                <div className="flex justify-between items-center">
-                  <div>
-                    <h4 className="font-medium text-gray-900">Error en el servidor</h4>
-                    <p className="text-sm text-gray-500">#TKT-001 - Alta prioridad</p>
-                  </div>
-                  <span className="px-3 py-1 bg-cyan-100 text-cyan-800 rounded-full text-sm">Abierto</span>
-                </div>
+                {tickets.length > 0 ? (
+                  tickets.map((ticket) => ( 
+                    <div key={ticket.id} className="p-4 border rounded-lg hover:bg-gray-50 transition-colors">
+                      <div  className="flex justify-between items-center">
+                        <div>
+                          <h4 className="font-medium text-gray-900"> {ticket.titulo} </h4>
+                          <p className="text-sm text-gray-500"> {ticket.titulo} </p>
+                        </div>
+                        <span className="px-3 py-1 bg-cyan-100 text-cyan-800 rounded-full text-sm"> {ticket.estado} </span>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <p>No tickets found.</p>
+                )}
               </div>
             </div>
           </div>
