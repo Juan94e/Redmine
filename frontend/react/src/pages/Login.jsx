@@ -71,7 +71,7 @@ const Login = () => {
                 {/* Botón de Login */}
                 <button
                     onClick={handleLogin}
-                    className="w-full bg-cyan-600 text-white py-2 px-4 rounded-lg hover:bg-cyan-700 transition-colors focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2"
+                    className="w-full bg-grey-6000 text-dark dark:text-white py-2 px-4 rounded-lg hover:bg-cyan-700 dark:hover:bg-gray-300 transition-colors focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2"
                 >
                     Iniciar Sesión
                 </button>
