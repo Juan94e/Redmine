@@ -24,7 +24,7 @@ class Ticket(Base):
     descripcion = Column(String)
     estado = Column(String, default="abierto")
     cliente_id = Column(Integer, ForeignKey("users.id"), nullable=False)
-    tecnico_id = Column(Integer, ForeignKey("users.id"), nullable=False) #se debe pasar bullable a true para que se asigne el tenico despues
+    tecnico_id = Column(Integer, ForeignKey("users.id"), nullable=True) #se debe pasar bullable a true para que se asigne el tenico despues
     fecha_creacion = Column(DateTime, nullable=False, default=func.now())  # <- Agregar nullable=False
     fecha_actualizacion = Column(DateTime, nullable=False, default=func.now(), onupdate=func.now())  # <- Agregar nullable=False
 

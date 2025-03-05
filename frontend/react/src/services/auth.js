@@ -16,9 +16,11 @@ export const login = async (username, password) => {
 
         const token = response.data.access_token;
         const role = response.data.role;  // Obtener el rol del usuario
+        const user_id = response.data.user_id;
         localStorage.setItem("token", token);  // Guardar el token en localStorage
         localStorage.setItem("role", role);  // Guardar el rol en localStorage
         localStorage.setItem("username", username); // Guardar el username
+        localStorage.setItem("user_id", user_id); // Guardar el username
         return { token, role };  // Devolver el token y el rol
     } catch (error) {
         throw new Error(error.response?.data?.detail || "Error en el login");

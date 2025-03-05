@@ -31,6 +31,13 @@ def get_users(db: Session = Depends(get_db)):
     users = db.query(User).all()  # Obtener todos los usuarios de la tabla
     return users
 
+#Endpoing para obtener todos los tecnicos
+@router.get("/tecnicos", response_model=List[UserResponse])
+def get_tecnicos(db: Session = Depends(get_db)):
+    tecnicos = db.query(User).filter(User.role == "tecnico").all()
+    return tecnicos
+
+
 # Endpoint para crear un nuevo usuario
 @router.post("/users", response_model=UserResponse)
 def create_user(user: UserCreate, db: Session = Depends(get_db)):

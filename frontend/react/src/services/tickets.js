@@ -11,3 +11,36 @@ export const getTickets = async () => {
         return [];  // Devuelve un array vacío en caso de error
     }
 };
+
+export const getClientTickets = async (cliente_id) => {
+    try {
+        const response = await axios.get(`${API_URL}/tickets/cliente/${cliente_id}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching tickets:', error);
+        return [];
+    }
+};
+
+export const createTicket = async (ticketData) => {
+    try {
+        const response = await axios.post(`${API_URL}/tickets`, ticketData);
+        return response.data;
+    } catch (error) {
+        console.error('Error creating ticket:', error);
+        throw error;
+    }
+};
+
+export const updateTicket = async (ticketId, updateData) => {
+    try {
+        const response = await axios.put(
+            `${API_URL}/tickets/${ticketId}/asignar`,
+            { tecnico_id: updateData }
+        );
+        return response.data;
+    } catch (error) {
+        console.error('Error updating ticket:', error.response?.data);
+        throw error;
+    }
+};
