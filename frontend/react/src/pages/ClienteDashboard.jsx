@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import { getClientTickets, createTicket, getTickets } from "../services/tickets";
+import { getTecnicos } from "../services/users"; // Nueva importación
 
 const ClienteDashboard = () => {
     const username = localStorage.getItem("username");
@@ -10,22 +11,28 @@ const ClienteDashboard = () => {
     const [newTicket, setNewTicket] = useState({
         titulo: "",
         descripcion: "",
+        tecnico_id: null // Nuevo campo agregado
     });
     const [error, setError] = useState("");
 
-    // Obtener tickets del cliente
+    // Obtener tickets del cliente y técnicos
     useEffect(() => {
-        const fetchTickets = async () => {
+        const fetchData = async () => {
             try {
-                const data = await getTickets();
-                setTickets(data);
+                // Obtener tickets
+                const ticketsData = await getTickets();
+                setTickets(ticketsData);
+                
+                // Obtener técnicos
+                const tecnicosData = await getTecnicos();
+                setTecnicos(tecnicosData);
             } catch (error) {
-                console.error("Error fetching tickets:", error);
+                console.error("Error fetching data:", error);
             }
         };
-        fetchTickets();
+        fetchData();
     }, []);
-    console.log("esto es user id", user_id)
+
     // Crear nuevo ticket
     const handleCreateTicket = async (e) => {
         e.preventDefault();
@@ -35,7 +42,14 @@ const ClienteDashboard = () => {
                 cliente_id: parseInt(user_id),
                 estado: "abierto"
             });
-            setNewTicket({ titulo: "", descripcion: "" });
+            
+            // Resetear formulario incluyendo tecnico_id
+            setNewTicket({ 
+                titulo: "", 
+                descripcion: "", 
+                tecnico_id: null 
+            });
+            
             // Actualizar lista de tickets
             const updatedTickets = await getTickets();
             setTickets(updatedTickets);
@@ -73,6 +87,31 @@ const ClienteDashboard = () => {
                                 required
                             />
                         </div>
+                        
+                        {/* Nuevo dropdown para técnicos */}
+                        <div className="mb-4">
+                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Asignar a técnico (opcional)
+                            </label>
+                            <select
+                                className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-cyan-500 focus:border-cyan-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                value={newTicket.tecnico_id || ""}
+                                onChange={(e) => 
+                                    setNewTicket({
+                                        ...newTicket,
+                                        tecnico_id: e.target.value ? parseInt(e.target.value) : null
+                                    })
+                                }
+                            >
+                                <option value="">Seleccionar técnico...</option>
+                                {tecnicos.map((tecnico) => (
+                                    <option key={tecnico.id} value={tecnico.id}>
+                                        {tecnico.username}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+
                         <div className="mb-4">
                             <textarea
                                 placeholder="Descripción del problema"
@@ -91,7 +130,7 @@ const ClienteDashboard = () => {
                     </form>
                 </div>
 
-                {/* Lista de Tickets */}
+                {/* Lista de Tickets (se mantiene igual) */}
                 <div className="bg-white dark:bg-gray-700 rounded-lg shadow-md p-6">
                     <h3 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">
                         Mis Tickets
