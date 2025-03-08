@@ -2,8 +2,11 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import { getClientTickets, createTicket, getTickets } from "../services/tickets";
 import { getTecnicos } from "../services/users"; // Nueva importación
+import { useNavigate } from "react-router-dom";
+
 
 const ClienteDashboard = () => {
+    const navigate = useNavigate(); 
     const username = localStorage.getItem("username");
     const user_id = localStorage.getItem("user_id"); 
     const [tecnicos, setTecnicos] = useState([]);
@@ -164,6 +167,14 @@ const ClienteDashboard = () => {
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
                                             {new Date(ticket.fecha_creacion).toLocaleDateString()}
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap">
+                                            <button 
+                                                onClick={() => navigate(`/edit-ticket/${ticket.id}`)}
+                                                className="text-cyan-600 hover:text-cyan-800"
+                                            >
+                                                Editar
+                                            </button>
                                         </td>
                                     </tr>
                                 ))}

@@ -108,3 +108,23 @@ def delete_ticket(ticket_id: int, db: Session = Depends(get_db)):
     db.delete(db_ticket)
     db.commit()
     return {"mensaje": "Ticket eliminado correctamente"}
+
+# Nuevo modelo Pydantic para actualizaciones
+class TicketUpdateCreate(BaseModel):
+    contenido: str
+
+# Nuevo endpoint para agregar actualizaciones
+@router.post("/tickets/{ticket_id}/updates")
+def add_ticket_update(
+    ticket_id: int,
+    update: TicketUpdateCreate,
+    db: Session = Depends(get_db)
+):
+    new_update = TicketUpdate(
+        ticket_id=ticket_id,
+        user_id=update.user_id,  # Asumimos que el user_id viene del frontend
+        contenido=update.contenido
+    )
+    db.add(new_update)
+    db.commit()
+    return {"mensaje": "Actualización agregada correctamente"}    

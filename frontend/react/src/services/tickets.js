@@ -32,7 +32,7 @@ export const createTicket = async (ticketData) => {
     }
 };
 
-export const updateTicket = async (ticketId, updateData) => {
+export const updateTicketOld = async (ticketId, updateData) => {
     try {
         const response = await axios.put(
             `${API_URL}/tickets/${ticketId}/asignar`,
@@ -41,6 +41,26 @@ export const updateTicket = async (ticketId, updateData) => {
         return response.data;
     } catch (error) {
         console.error('Error updating ticket:', error.response?.data);
+        throw error;
+    }
+};
+
+export const getTicketById = async (id) => {
+    try {
+        const response = await axios.get(`${API_URL}/tickets/${id}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching ticket:', error);
+        throw error;
+    }
+};
+
+export const updateTicket = async (id, ticketData) => {
+    try {
+        const response = await axios.put(`${API_URL}/tickets/${id}`, ticketData);
+        return response.data;
+    } catch (error) {
+        console.error('Error updating ticket:', error);
         throw error;
     }
 };
