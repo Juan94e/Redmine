@@ -122,7 +122,7 @@ def add_ticket_update(
 ):
     new_update = TicketUpdate(
         ticket_id=ticket_id,
-        user_id=update.user_id,  # Asumimos que el user_id viene del frontend
+        user_id=update.user_id,  
         contenido=update.contenido
     )
     db.add(new_update)

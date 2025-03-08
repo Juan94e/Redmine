@@ -36,7 +36,7 @@ const EditTicket = () => {
         e.preventDefault();
         try {
             await updateTicket(id, ticket);
-            navigate('/client-dashboard');
+            navigate('/cliente/dashboard');
         } catch (error) {
             setError('Error al actualizar el ticket');
         }
