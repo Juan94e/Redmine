@@ -171,7 +171,7 @@ const ClienteDashboard = () => {
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
                                             <button 
-                                                onClick={() => navigate(`/edit-ticket/${ticket.id}`)}
+                                                onClick={() => navigate(`/cliente/edit-ticket/${ticket.id}`)}
                                                 className="text-cyan-600 hover:text-cyan-800"
                                             >
                                                 Editar

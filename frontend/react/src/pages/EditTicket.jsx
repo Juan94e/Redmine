@@ -60,12 +60,29 @@ const EditTicket = () => {
         }
     };
 
+    const handleCancel = async (e) => {
+        e.preventDefault();
+        const role = localStorage.getItem("role");
+        if (role === "cliente" ){
+            navigate('/cliente/dashboard');
+        } else {
+            navigate('/tecnico/dashboard');
+        }
+        
+    };
+
     return (
         <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
             <Navbar />
             
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 max-w-7xl mx-auto mt-12">
                 <h1 className="text-3xl font-bold mb-6 dark:text-white">Editar Ticket #{id}</h1>
+                <button
+                        onClick={handleCancel}
+                        className="mt-2 mb-10 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
+                    >
+                        Cancelar
+                    </button>
                 
                 <form onSubmit={handleSubmit} className="space-y-6">
                     {/* Campos editables */}

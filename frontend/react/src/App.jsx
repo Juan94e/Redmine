@@ -17,13 +17,13 @@ const App = () => {
                 {/* Ruta para clientes */}
                 <Route element={<ProtectedRoute allowedRoles={["cliente"]} />}>
                     <Route path="/cliente/dashboard" element={<ClienteDashboard />} />
-                    <Route path="/edit-ticket/:id" element={<EditTicket />} />
+                    <Route path="/cliente/edit-ticket/:id" element={<EditTicket />} />
                 </Route>
 
                 {/* Ruta para técnicos */}
                 <Route element={<ProtectedRoute allowedRoles={["tecnico"]} />}>
                     <Route path="/tecnico/dashboard" element={<TecnicoDashboard />} />
-                    <Route path="/edit-ticket/:id" element={<EditTicket />} />
+                    <Route path="/tecnico/edit-ticket/:id" element={<EditTicket />} />
                 </Route>
 
                 {/* Ruta para admin/otros (opcional)

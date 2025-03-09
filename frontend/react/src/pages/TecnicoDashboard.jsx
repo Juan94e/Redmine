@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import { getTickets } from "../services/tickets";
+import { useNavigate } from "react-router-dom";
 
 const TecnicoDashboard = () => {
+    const navigate = useNavigate(); 
     const username = localStorage.getItem("username");
     const [tickets, setTickets] = useState([]);
 
@@ -66,6 +68,7 @@ const TecnicoDashboard = () => {
                                     <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Título</th>
                                     <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Estado</th>
                                     <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Prioridad</th>
+                                    <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody className="bg-white divide-y divide-gray-200">
@@ -75,9 +78,9 @@ const TecnicoDashboard = () => {
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{ticket.titulo}</td>
                                         <td className="px-6 py-4">
                                             <span className={`px-2 py-1 text-xs rounded-full ${
-                                                ticket.status === 'abierto' 
+                                                ticket.estado === 'abierto' 
                                                     ? 'bg-green-100 text-green-800' 
-                                                    : ticket.estado === 'En Progreso'
+                                                    : ticket.estado === 'en progreso'
                                                     ? 'bg-cyan-100 text-cyan-800'
                                                     : 'bg-gray-100 text-gray-800'
                                             }`}>
@@ -86,14 +89,22 @@ const TecnicoDashboard = () => {
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                             <span className={`font-medium ${
-                                                ticket.priority === 'Alta' 
+                                                ticket.prioridad === 'Alta' 
                                                     ? 'text-red-600' 
                                                     : ticket.priority === 'Media'
                                                     ? 'text-yellow-600'
                                                     : 'text-gray-600'
                                             }`}>
-                                                {ticket.priority}
+                                                {ticket.prioridad || 'Sin prioridad'} 
                                             </span>
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap">
+                                            <button 
+                                                onClick={() => navigate(`/tecnico/edit-ticket/${ticket.id}`)}
+                                                className="text-cyan-600 hover:text-cyan-800"
+                                            >
+                                                Editar
+                                            </button>
                                         </td>
                                     </tr>
                                 ))}
