@@ -64,3 +64,16 @@ export const updateTicket = async (id, ticketData) => {
         throw error;
     }
 };
+
+export const addTicketUpdate = async (ticketId, updateData) => {
+    try {
+        const response = await axios.post(
+            `${API_URL}/tickets/${ticketId}/updates`,
+            updateData
+        );
+        return response.data;
+    } catch (error) {
+        console.error('Error adding ticket update:', error);
+        throw error;
+    }
+};

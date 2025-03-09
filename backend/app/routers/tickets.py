@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from ..models import Ticket, User  # Importar los modelos Ticket y User
+from ..models import Ticket, User, TicketUpdate  # Importar los modelos Ticket y User
 from ..database import get_db  # Importar la función get_db
 from pydantic import BaseModel
 from typing import List
@@ -25,6 +25,11 @@ class TicketResponse(BaseModel):
     tecnico_id: int | None
     fecha_creacion: datetime
     fecha_actualizacion: datetime
+
+# Nuevo modelo Pydantic para actualizaciones
+class TicketUpdateCreate(BaseModel):
+    contenido: str
+    user_id: int
 
 # Endpoint para obtener todos los tickets
 @router.get("/tickets", response_model=List[TicketResponse])
@@ -58,6 +63,34 @@ def create_ticket(ticket: TicketCreate, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(db_ticket)
     return db_ticket
+
+# Nuevo endpoint para agregar actualizaciones
+@router.post("/tickets/{ticket_id}/updates")
+def add_ticket_update(
+    ticket_id: int,
+    update: TicketUpdateCreate,
+    db: Session = Depends(get_db)
+):
+    # Verificar si el ticket existe
+    ticket = db.query(Ticket).filter(Ticket.id == ticket_id).first()
+    if not ticket:
+        raise HTTPException(status_code=404, detail="Ticket no encontrado")
+
+    # Verificar si el usuario existe
+    user = db.query(User).filter(User.id == update.user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="Usuario no encontrado")
+
+    new_update = TicketUpdate(
+        ticket_id=ticket_id,
+        user_id=update.user_id,  
+        contenido=update.contenido
+    )
+    db.add(new_update)
+    db.commit()
+    db.refresh(new_update) # Opcional: para obtener el objeto actualizado
+    return {"mensaje": "Actualización agregada correctamente"}
+
 
 # Endpoint para obtener un ticket por ID
 @router.get("/tickets/{ticket_id}", response_model=TicketResponse)
@@ -109,22 +142,4 @@ def delete_ticket(ticket_id: int, db: Session = Depends(get_db)):
     db.commit()
     return {"mensaje": "Ticket eliminado correctamente"}
 
-# Nuevo modelo Pydantic para actualizaciones
-class TicketUpdateCreate(BaseModel):
-    contenido: str
-
-# Nuevo endpoint para agregar actualizaciones
-@router.post("/tickets/{ticket_id}/updates")
-def add_ticket_update(
-    ticket_id: int,
-    update: TicketUpdateCreate,
-    db: Session = Depends(get_db)
-):
-    new_update = TicketUpdate(
-        ticket_id=ticket_id,
-        user_id=update.user_id,  
-        contenido=update.contenido
-    )
-    db.add(new_update)
-    db.commit()
-    return {"mensaje": "Actualización agregada correctamente"}    
+    

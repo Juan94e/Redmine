@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getTicketById, updateTicket } from '../services/tickets';
+import { getTicketById, updateTicket, addTicketUpdate } from '../services/tickets';
 import Navbar from '../components/Navbar';
 import { getTecnicos } from "../services/users";
 
@@ -45,8 +45,15 @@ const EditTicket = () => {
     const handleAddUpdate = async () => {
         if (nuevaActualizacion.trim()) {
             try {
-                // Aquí deberías implementar la llamada a add_ticket_update
-                setNuevaActualizacion('');
+                const user_id = localStorage.getItem("user_id"); // Obtén el ID del usuario actual
+                await addTicketUpdate(id, {
+                    contenido: nuevaActualizacion,
+                    user_id: parseInt(user_id)  // Envía el ID del usuario
+                });
+                setNuevaActualizacion(''); // Limpia el campo de texto
+                // Opcional: Recargar el ticket para mostrar la nueva actualización
+                const updatedTicket = await getTicketById(id);
+                setTicket(updatedTicket);
             } catch (error) {
                 setError('Error al agregar la actualización');
             }

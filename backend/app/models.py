@@ -32,7 +32,7 @@ class Ticket(Base):
     cliente = relationship("User", back_populates="tickets", foreign_keys=[cliente_id])  # Relación con el cliente
     tecnico = relationship("User", foreign_keys=[tecnico_id])  # Relación con el técnico
     archivos = relationship("Archivo", back_populates="ticket")  # Relación con archivos
-    actualizaciones = relationship("TicketUpdate", back_populates="ticket")  # Nueva relación
+    actualizaciones = relationship("TicketUpdate", back_populates="ticket")  # Relacion con TicketUpdate
 
 class TicketUpdate(Base):
     __tablename__ = "ticket_updates"
