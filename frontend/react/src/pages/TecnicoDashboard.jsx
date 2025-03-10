@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import { getTickets } from "../services/tickets";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const TecnicoDashboard = () => {
     const navigate = useNavigate(); 
@@ -75,7 +75,11 @@ const TecnicoDashboard = () => {
                                 {tickets.map((ticket) => (
                                     <tr key={ticket.id} className="hover:bg-gray-50 transition-colors">
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">#{ticket.id}</td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{ticket.titulo}</td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                            <Link to={`/tecnico/view-ticket/${ticket.id}`} > 
+                                                {ticket.titulo}
+                                            </Link>
+                                        </td>
                                         <td className="px-6 py-4">
                                             <span className={`px-2 py-1 text-xs rounded-full ${
                                                 ticket.estado === 'abierto' 

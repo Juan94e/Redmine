@@ -4,7 +4,7 @@ const API_URL = "http://127.0.0.1:8000";  // URL de tu backend FastAPI
 
 export const getTickets = async () => {
     try {
-        const response = await axios.get(`${API_URL}/tickets`);  // Llamar al endpoint /api/users
+        const response = await axios.get(`${API_URL}/tickets`);  
         return response.data;  // Devuelve la lista de tickets
     } catch (error) {
         console.error('Error fetching users:', error);
@@ -75,5 +75,15 @@ export const addTicketUpdate = async (ticketId, updateData) => {
     } catch (error) {
         console.error('Error adding ticket update:', error);
         throw error;
+    }
+};
+
+export const getTicketUpdates = async (ticketId) => {
+    try {
+        const response = await axios.get(`${API_URL}/tickets/${ticketId}/updates`); 
+        return response.data;  // Devuelve la lista de las actualizaciones
+    } catch (error) {
+        console.error('Error fetching users:', error);
+        return [];  // Devuelve un array vacío en caso de error
     }
 };

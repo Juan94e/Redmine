@@ -26,10 +26,17 @@ class TicketResponse(BaseModel):
     fecha_creacion: datetime
     fecha_actualizacion: datetime
 
-# Nuevo modelo Pydantic para actualizaciones
+# Nuevo modelo Pydantic para crear actualizaciones
 class TicketUpdateCreate(BaseModel):
     contenido: str
     user_id: int
+
+# Nuevo modelo Pydantic para obtener actualizaciones
+class TicketUpdateResponse(BaseModel):
+    contenido: str
+    fecha_creacion: datetime
+    user_id: int
+    ticket_id: int
 
 # Endpoint para obtener todos los tickets
 @router.get("/tickets", response_model=List[TicketResponse])
@@ -99,6 +106,14 @@ def get_ticket(ticket_id: int, db: Session = Depends(get_db)):
     if not ticket:
         raise HTTPException(status_code=404, detail="Ticket no encontrado")
     return ticket
+
+# Endpoint para obtener las actualizaciones de ticket por ID
+@router.get("/tickets/{ticket_id}/updates", response_model=List[TicketUpdateResponse])
+def get_ticket_update(ticket_id: int, db: Session = Depends(get_db)):
+    ticketUpdates = (db.query(TicketUpdate).filter(TicketUpdate.ticket_id == ticket_id).all())
+    if not ticketUpdates:
+        raise HTTPException(status_code=404, detail="No hay Updates")
+    return ticketUpdates    
 
 # Endpoint para actualizar un ticket
 @router.put("/tickets/{ticket_id}", response_model=TicketResponse)

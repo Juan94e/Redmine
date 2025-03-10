@@ -6,6 +6,7 @@ import TecnicoDashboard from "./pages/TecnicoDashboard";
 import ClienteDashboard from "./pages/ClienteDashboard";
 import EditTicket from "./pages/EditTicket";
 import ProtectedRoute from "./components/ProtectedRoute";
+import ViewTicket from "./pages/ViewTicket";
 
 const App = () => {
     return (
@@ -18,12 +19,14 @@ const App = () => {
                 <Route element={<ProtectedRoute allowedRoles={["cliente"]} />}>
                     <Route path="/cliente/dashboard" element={<ClienteDashboard />} />
                     <Route path="/cliente/edit-ticket/:id" element={<EditTicket />} />
+                    <Route path="/cliente/view-ticket/:id" element={<ViewTicket />} />
                 </Route>
 
                 {/* Ruta para técnicos */}
                 <Route element={<ProtectedRoute allowedRoles={["tecnico"]} />}>
                     <Route path="/tecnico/dashboard" element={<TecnicoDashboard />} />
                     <Route path="/tecnico/edit-ticket/:id" element={<EditTicket />} />
+                    <Route path="/tecnico/view-ticket/:id" element={<ViewTicket />} />
                 </Route>
 
                 {/* Ruta para admin/otros (opcional)
