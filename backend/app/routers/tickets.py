@@ -38,6 +38,13 @@ class TicketUpdateResponse(BaseModel):
     user_id: int
     ticket_id: int
 
+class TicketUpdates(BaseModel):  # Nuevo modelo para actualización
+    titulo: str
+    descripcion: str
+    estado: str  # Agrega este campo
+    cliente_id: int
+    tecnico_id: int | None = None    
+
 # Endpoint para obtener todos los tickets
 @router.get("/tickets", response_model=List[TicketResponse])
 def get_tickets(db: Session = Depends(get_db)):
@@ -116,29 +123,34 @@ def get_ticket_update(ticket_id: int, db: Session = Depends(get_db)):
     return ticketUpdates    
 
 # Endpoint para actualizar un ticket
+# Modifica el endpoint de actualización:
 @router.put("/tickets/{ticket_id}", response_model=TicketResponse)
-def update_ticket(ticket_id: int, ticket: TicketCreate, db: Session = Depends(get_db)):
-    # Obtener el ticket existente
+def update_ticket(
+    ticket_id: int, 
+    ticket_data: TicketUpdates,  # Usa el nuevo modelo
+    db: Session = Depends(get_db)
+):
     db_ticket = db.query(Ticket).filter(Ticket.id == ticket_id).first()
     if not db_ticket:
         raise HTTPException(status_code=404, detail="Ticket no encontrado")
 
     # Verificar si el cliente existe
-    cliente = db.query(User).filter(User.id == ticket.cliente_id).first()
+    cliente = db.query(User).filter(User.id == ticket_data.cliente_id).first()
     if not cliente:
         raise HTTPException(status_code=404, detail="Cliente no encontrado")
 
     # Verificar si el técnico existe (si se proporcionó)
-    if ticket.tecnico_id:
-        tecnico = db.query(User).filter(User.id == ticket.tecnico_id).first()
+    if ticket_data.tecnico_id:
+        tecnico = db.query(User).filter(User.id == ticket_data.tecnico_id).first()
         if not tecnico:
             raise HTTPException(status_code=404, detail="Técnico no encontrado")
 
-    # Actualizar los campos del ticket
-    db_ticket.titulo = ticket.titulo
-    db_ticket.descripcion = ticket.descripcion
-    db_ticket.cliente_id = ticket.cliente_id
-    db_ticket.tecnico_id = ticket.tecnico_id
+    # Actualiza todos los campos, incluyendo el estado
+    db_ticket.titulo = ticket_data.titulo
+    db_ticket.descripcion = ticket_data.descripcion
+    db_ticket.estado = ticket_data.estado  # Ahora se actualiza
+    db_ticket.cliente_id = ticket_data.cliente_id
+    db_ticket.tecnico_id = ticket_data.tecnico_id
 
     db.commit()
     db.refresh(db_ticket)
