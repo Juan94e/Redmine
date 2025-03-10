@@ -64,9 +64,9 @@ const EditTicket = () => {
         e.preventDefault();
         const role = localStorage.getItem("role");
         if (role === "cliente" ){
-            navigate('/cliente/dashboard');
+            navigate(-1);
         } else {
-            navigate('/tecnico/dashboard');
+            navigate(-1);
         }
         
     };
@@ -81,7 +81,7 @@ const EditTicket = () => {
                         onClick={handleCancel}
                         className="mt-2 mb-10 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
                     >
-                        Cancelar
+                        Volver
                     </button>
                 
                 <form onSubmit={handleSubmit} className="space-y-6">
