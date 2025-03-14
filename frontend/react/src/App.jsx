@@ -12,7 +12,10 @@ const App = () => {
     return (
         <Router>
             <Routes>
-                {/* Ruta pública */}
+
+                <Route path="/" element={<Navigate to="/login" replace />} />
+
+                {/* Ruta pública c */}
                 <Route path="/login" element={<Login />} />
 
                 {/* Ruta para clientes */}
@@ -35,7 +38,7 @@ const App = () => {
                 </Route> */}
 
                 {/* Redirección para rutas no definidas */}
-                <Route path="*" element={<Navigate to="/" replace />} />
+                {/* <Route path="*" element={<Navigate to="/" replace />} /> */}
             </Routes>
         </Router>
     );
