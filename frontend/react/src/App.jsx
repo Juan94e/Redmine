@@ -15,7 +15,7 @@ const App = () => {
 
                 <Route path="/" element={<Navigate to="/login" replace />} />
 
-                {/* Ruta pública c */}
+                {/* Ruta pública */}
                 <Route path="/login" element={<Login />} />
 
                 {/* Ruta para clientes */}
