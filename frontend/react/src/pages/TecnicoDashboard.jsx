@@ -70,7 +70,10 @@ const TecnicoDashboard = () => {
                                     <tr key={ticket.id} className="hover:bg-gray-50 dark:hover:bg-gray-500 transition-colors">
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">#{ticket.id}</td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
-                                            <Link to={`/tecnico/view-ticket/${ticket.id}`} > 
+                                            <Link 
+                                                to={`/tecnico/view-ticket/${ticket.id}`}
+                                                className="text-cyan-400 hover:text-cyan-800 !important" 
+                                            > 
                                                 {ticket.titulo}
                                             </Link>
                                         </td>
