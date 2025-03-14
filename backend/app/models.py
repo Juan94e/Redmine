@@ -15,7 +15,7 @@ class User(Base):
 
     # Relación con la tabla tickets (especificando la clave foránea)
     tickets = relationship("Ticket", back_populates="cliente", foreign_keys="Ticket.cliente_id")
-#solo un comentario
+
 class Ticket(Base):
     __tablename__ = "tickets"
 
