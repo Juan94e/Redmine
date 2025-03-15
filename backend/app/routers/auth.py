@@ -1,3 +1,4 @@
+import os
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
@@ -10,7 +11,8 @@ from datetime import datetime, timedelta
 router = APIRouter()
 
 # Configuración para JWT
-SECRET_KEY = "tu_clave_secreta"  # Cambia esto por una clave segura en producción
+#SECRET_KEY = "tu_clave_secreta"  
+SECRET_KEY = os.environ.get("SECRET_KEY")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 

@@ -10,7 +10,7 @@ app = FastAPI()
 # Debe ser el primer middleware registrado
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["https://redmine-pi.vercel.app"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
