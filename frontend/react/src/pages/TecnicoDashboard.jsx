@@ -7,10 +7,10 @@ const TecnicoDashboard = () => {
     const navigate = useNavigate(); 
     const username = localStorage.getItem("username");
     const [tickets, setTickets] = useState([]);
-    const [stats] = useState({
-        abiertos: 12,
-        progreso: 4,
-        resueltos: 24
+    const [stats, setStats] = useState({
+        abiertos: 0,
+        progreso: 0,
+        resueltos: 0
     });
 
     useEffect(() => {
@@ -18,6 +18,14 @@ const TecnicoDashboard = () => {
             try {
                 const data = await getTickets(username);
                 setTickets(data);
+                
+                // Calcular estadísticas
+                const estadisticas = {
+                    abiertos: data.filter(ticket => ticket.estado === 'abierto').length,
+                    progreso: data.filter(ticket => ticket.estado === 'en progreso').length,
+                    resueltos: data.filter(ticket => ticket.estado === 'resuelto').length
+                };
+                setStats(estadisticas);
             } catch (error) {
                 console.error("Error fetching tickets:", error);
             }
